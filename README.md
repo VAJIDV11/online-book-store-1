@@ -29,8 +29,8 @@ Follow these simple steps to run the project locally on your machine:
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/your-username/book-store.git
-cd book-store
+git clone https://github.com/VAJIDV11/online-book-store-1.git
+cd online-book-store-1
 npm install
 ```
 
