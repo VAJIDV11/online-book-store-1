@@ -1,0 +1,152 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/alerts') %>
+
+<main class="flex-1 py-12 bg-slate-50 flex items-center justify-center">
+  <div class="max-w-md w-full mx-4">
+    
+    <!-- Registration Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-xl p-8 sm:p-10">
+      
+      <div class="text-center mb-8">
+        <div class="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center mx-auto text-xl mb-3 shadow-inner">
+          <i class="fa-solid fa-user-plus"></i>
+        </div>
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Create an Account</h1>
+        <p class="text-xs text-slate-500 mt-1">Join BookHaven for fast checkout, order tracking, and exclusive discounts.</p>
+      </div>
+
+      <!-- Server Validation Errors List -->
+      <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs">
+          <div class="font-bold flex items-center gap-1.5 mb-1.5">
+            <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+            <span>Please fix the following issues:</span>
+          </div>
+          <ul class="list-disc list-inside space-y-1 text-rose-700">
+            <% errors.forEach(err => { %>
+              <li><%= err.msg %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
+      <form id="register-form" action="/register" method="POST" class="space-y-4" novalidate>
+        
+        <!-- Full Name -->
+        <div>
+          <label for="full_name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Full Name *</label>
+          <div class="relative">
+            <input 
+              type="text" 
+              id="full_name" 
+              name="full_name" 
+              required
+              value="<%= typeof formData !== 'undefined' && formData.full_name ? formData.full_name : '' %>"
+              placeholder="e.g. Alex Johnson" 
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition"
+            >
+            <i class="fa-regular fa-user absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+          </div>
+        </div>
+
+        <!-- Email Address -->
+        <div>
+          <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Email Address *</label>
+          <div class="relative">
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required
+              value="<%= typeof formData !== 'undefined' && formData.email ? formData.email : '' %>"
+              placeholder="alex@example.com" 
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition"
+            >
+            <i class="fa-regular fa-envelope absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+          </div>
+        </div>
+
+        <!-- Phone Number -->
+        <div>
+          <label for="phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Phone Number (Optional)</label>
+          <div class="relative">
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              value="<%= typeof formData !== 'undefined' && formData.phone ? formData.phone : '' %>"
+              placeholder="+1 (555) 019-2834" 
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition"
+            >
+            <i class="fa-solid fa-phone absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Password *</label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              required
+              minlength="8"
+              placeholder="Minimum 8 characters with letters & numbers" 
+              class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition"
+            >
+            <i class="fa-solid fa-lock absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+            <button type="button" data-target="password" class="toggle-password-btn absolute right-3.5 top-2.5 text-slate-400 hover:text-slate-600 transition">
+              <i class="fa-regular fa-eye text-xs"></i>
+            </button>
+          </div>
+
+          <!-- Live password strength indicator -->
+          <div class="mt-2 space-y-1">
+            <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+              <div id="password-strength-bar" class="h-1.5 rounded-full w-0 transition-all duration-300"></div>
+            </div>
+            <div id="password-strength-text" class="text-[10px]"></div>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+          <label for="confirm_password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Confirm Password *</label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="confirm_password" 
+              name="confirm_password" 
+              required
+              placeholder="Re-enter your password" 
+              class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition"
+            >
+            <i class="fa-solid fa-shield-halved absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+            <button type="button" data-target="confirm_password" class="toggle-password-btn absolute right-3.5 top-2.5 text-slate-400 hover:text-slate-600 transition">
+              <i class="fa-regular fa-eye text-xs"></i>
+            </button>
+          </div>
+          <p id="confirm-error" class="hidden text-[11px] text-rose-500 font-semibold mt-1">Passwords do not match.</p>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-4">
+          <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-brand-600/30 transition">
+            Create Free Account
+          </button>
+        </div>
+      </form>
+
+      <!-- Sign In Switch -->
+      <div class="mt-6 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
+        Already have an account? 
+        <a href="/login" class="font-bold text-brand-600 hover:text-brand-800 transition ml-1">Sign In here</a>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

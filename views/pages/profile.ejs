@@ -1,0 +1,132 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/alerts') %>
+
+<main class="flex-1 py-8 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Profile Page Header -->
+    <div class="mb-8">
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">My Account & Order History</h1>
+      <p class="text-xs text-slate-500 mt-1">Manage your customer profile and monitor your past book purchases.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- User Profile Sidebar (Col 4) -->
+      <div class="lg:col-span-4">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+          
+          <div class="flex items-center space-x-4">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-500 text-white font-bold text-xl flex items-center justify-center shadow-md shadow-brand-500/20">
+              <%= user.full_name.charAt(0).toUpperCase() %>
+            </div>
+            <div>
+              <h2 class="font-bold text-base text-slate-900"><%= user.full_name %></h2>
+              <span class="inline-block mt-0.5 px-2 py-0.5 text-[10px] font-extrabold uppercase rounded <%= user.role === 'admin' ? 'bg-amber-100 text-amber-800' : 'bg-brand-50 text-brand-700' %>">
+                <%= user.role === 'admin' ? '🛡️ Administrator' : '👤 Customer' %>
+              </span>
+            </div>
+          </div>
+
+          <div class="space-y-3 pt-4 border-t border-slate-100 text-xs">
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-bold">Email Address</span>
+              <span class="font-semibold text-slate-800"><%= user.email %></span>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-bold">Phone</span>
+              <span class="font-semibold text-slate-800"><%= user.phone || 'Not provided' %></span>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-bold">Default Delivery Address</span>
+              <span class="font-semibold text-slate-800 leading-relaxed"><%= user.address || 'No saved address' %></span>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-bold">Member Since</span>
+              <span class="font-semibold text-slate-800"><%= new Date(user.created_at).toLocaleDateString() %></span>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-100">
+            <form action="/logout" method="POST">
+              <button type="submit" class="w-full py-2.5 px-4 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Sign Out</span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Orders History (Col 8) -->
+      <div class="lg:col-span-8">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-6 sm:p-8 space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <h2 class="font-bold text-base text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-clock-rotate-left text-brand-600"></i>
+              <span>Past Orders (<%= orders.length %>)</span>
+            </h2>
+          </div>
+
+          <% if (orders.length === 0) { %>
+            <div class="py-12 text-center">
+              <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto text-2xl mb-3">
+                <i class="fa-solid fa-box-open"></i>
+              </div>
+              <h3 class="text-sm font-bold text-slate-800">No Orders Placed Yet</h3>
+              <p class="text-xs text-slate-500 mt-1 max-w-xs mx-auto">You have not completed any purchases yet. Your future orders and tracking status will appear here.</p>
+              <a href="/catalogue" class="mt-4 inline-block px-4 py-2 bg-brand-600 text-white rounded-lg text-xs font-semibold hover:bg-brand-700 transition">
+                Start Shopping
+              </a>
+            </div>
+          <% } else { %>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="border-b border-slate-100 text-slate-400 uppercase font-bold text-[10px]">
+                    <th class="pb-3">Order ID</th>
+                    <th class="pb-3">Date</th>
+                    <th class="pb-3">Items</th>
+                    <th class="pb-3">Total</th>
+                    <th class="pb-3">Status</th>
+                    <th class="pb-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <% orders.forEach(order => { %>
+                    <tr class="hover:bg-slate-50/80 transition">
+                      <td class="py-3.5 font-bold font-mono text-slate-900">#<%= order.id %></td>
+                      <td class="py-3.5 text-slate-600"><%= new Date(order.created_at).toLocaleDateString() %></td>
+                      <td class="py-3.5 text-slate-600"><%= order.total_items %> <%= order.total_items === 1 ? 'item' : 'items' %></td>
+                      <td class="py-3.5 font-bold text-slate-900">$<%= parseFloat(order.total_amount).toFixed(2) %></td>
+                      <td class="py-3.5">
+                        <% if (order.order_status === 'Delivered') { %>
+                          <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold rounded-full text-[10px]">Delivered</span>
+                        <% } else if (order.order_status === 'Shipped') { %>
+                          <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 font-bold rounded-full text-[10px]">Shipped</span>
+                        <% } else if (order.order_status === 'Cancelled') { %>
+                          <span class="px-2 py-0.5 bg-rose-50 text-rose-700 font-bold rounded-full text-[10px]">Cancelled</span>
+                        <% } else { %>
+                          <span class="px-2 py-0.5 bg-amber-50 text-amber-700 font-bold rounded-full text-[10px]">Processing</span>
+                        <% } %>
+                      </td>
+                      <td class="py-3.5 text-right">
+                        <a href="/order-success/<%= order.id %>" class="text-brand-600 hover:text-brand-800 font-semibold transition">Receipt &rarr;</a>
+                      </td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          <% } %>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

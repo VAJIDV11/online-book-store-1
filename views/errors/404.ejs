@@ -1,0 +1,39 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="flex-1 py-16 bg-slate-50 flex items-center justify-center">
+  <div class="max-w-md w-full mx-4 text-center">
+    <div class="w-20 h-20 rounded-3xl bg-brand-50 text-brand-600 flex items-center justify-center mx-auto text-3xl mb-4 shadow-sm">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+    <span class="text-xs font-bold text-brand-600 uppercase tracking-widest">Error 404</span>
+    <h1 class="text-3xl font-extrabold text-slate-900 mt-1">Page Not Found</h1>
+    <p class="text-xs text-slate-500 mt-2 max-w-xs mx-auto leading-relaxed">
+      The book or page you are looking for doesn't exist or may have been moved to another section.
+    </p>
+
+    <!-- Search in 404 -->
+    <div class="mt-6">
+      <form action="/catalogue" method="GET" class="relative max-w-xs mx-auto">
+        <input 
+          type="text" 
+          name="q" 
+          placeholder="Search for books..." 
+          class="w-full pl-9 pr-3 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-brand-500 shadow-sm"
+        >
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+      </form>
+    </div>
+
+    <div class="mt-6 flex justify-center space-x-3">
+      <a href="/" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition">
+        Return to Home
+      </a>
+      <a href="/catalogue" class="px-5 py-2.5 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 shadow-sm transition">
+        Browse Catalogue
+      </a>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,205 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/alerts') %>
+
+<main class="flex-1 py-8 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header -->
+    <div class="mb-8">
+      <nav class="flex items-center text-xs text-slate-500 space-x-2 mb-2">
+        <a href="/cart" class="hover:text-brand-600 transition">Cart</a>
+        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        <span class="text-slate-800 font-semibold">Checkout</span>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Finalize Your Order</h1>
+    </div>
+
+    <!-- Server Validation Errors -->
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+      <div class="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs">
+        <div class="font-bold flex items-center gap-1.5 mb-1.5">
+          <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+          <span>Please correct the following fields:</span>
+        </div>
+        <ul class="list-disc list-inside space-y-1 text-rose-700">
+          <% errors.forEach(err => { %>
+            <li><%= err.msg %></li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
+
+    <form action="/checkout" method="POST" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Left Column: Shipping & Payment (Col 7) -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <!-- Shipping Address Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-4">
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+            <i class="fa-solid fa-truck-ramp-box text-brand-600"></i>
+            <span>1. Shipping Details</span>
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <!-- Full Name -->
+            <div class="sm:col-span-2">
+              <label for="shipping_name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Recipient Full Name *</label>
+              <input 
+                type="text" 
+                id="shipping_name" 
+                name="shipping_name" 
+                required 
+                value="<%= typeof formData !== 'undefined' && formData.shipping_name ? formData.shipping_name : '' %>"
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:border-brand-500"
+              >
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="shipping_email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address *</label>
+              <input 
+                type="email" 
+                id="shipping_email" 
+                name="shipping_email" 
+                required 
+                value="<%= typeof formData !== 'undefined' && formData.shipping_email ? formData.shipping_email : '' %>"
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:border-brand-500"
+              >
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <label for="shipping_phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Phone Number *</label>
+              <input 
+                type="tel" 
+                id="shipping_phone" 
+                name="shipping_phone" 
+                required 
+                value="<%= typeof formData !== 'undefined' && formData.shipping_phone ? formData.shipping_phone : '' %>"
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:border-brand-500"
+              >
+            </div>
+
+            <!-- Detailed Address -->
+            <div class="sm:col-span-2">
+              <label for="shipping_address" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Street Address, City, State & Zip *</label>
+              <textarea 
+                id="shipping_address" 
+                name="shipping_address" 
+                rows="3" 
+                required 
+                placeholder="742 Evergreen Terrace, Springfield, OR 97477"
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:border-brand-500"
+              ><%= typeof formData !== 'undefined' && formData.shipping_address ? formData.shipping_address : '' %></textarea>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Payment Method Simulation Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-4">
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+            <i class="fa-solid fa-credit-card text-brand-600"></i>
+            <span>2. Payment Method (Sandbox Simulation)</span>
+          </h2>
+
+          <div class="space-y-3">
+            <label class="flex items-center justify-between p-3.5 rounded-xl border-2 border-brand-500 bg-brand-50/40 cursor-pointer">
+              <div class="flex items-center space-x-3">
+                <input type="radio" name="payment_method" value="Credit/Debit Card (Simulated)" checked class="text-brand-600 focus:ring-brand-500">
+                <div>
+                  <span class="block text-xs font-bold text-slate-900">Instant Online Card Payment</span>
+                  <span class="text-[11px] text-slate-500">Simulated 256-bit encrypted checkout</span>
+                </div>
+              </div>
+              <div class="flex space-x-1 text-slate-600 text-lg">
+                <i class="fa-brands fa-cc-visa"></i>
+                <i class="fa-brands fa-cc-mastercard"></i>
+              </div>
+            </label>
+
+            <label class="flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer transition">
+              <div class="flex items-center space-x-3">
+                <input type="radio" name="payment_method" value="Cash on Delivery" class="text-brand-600 focus:ring-brand-500">
+                <div>
+                  <span class="block text-xs font-bold text-slate-900">Cash on Delivery (COD)</span>
+                  <span class="text-[11px] text-slate-500">Pay cash upon book arrival</span>
+                </div>
+              </div>
+              <i class="fa-solid fa-money-bill-wave text-emerald-600 text-base"></i>
+            </label>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-50 text-[11px] text-slate-500 flex items-center space-x-2">
+            <i class="fa-solid fa-circle-info text-brand-600 text-sm"></i>
+            <span>Demo Mode: No real charges will be made. An instant order receipt will be generated.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Order Review (Col 5) -->
+      <div class="lg:col-span-5">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm sticky top-24 space-y-6">
+          <h2 class="text-base font-bold text-slate-900 pb-3 border-b border-slate-100">Review Items (<%= cartItems.length %>)</h2>
+
+          <!-- Mini Items List -->
+          <div class="max-h-60 overflow-y-auto space-y-3 pr-1 divide-y divide-slate-100">
+            <% cartItems.forEach(item => { %>
+              <% const price = item.discount_price !== null && item.discount_price !== undefined ? parseFloat(item.discount_price) : parseFloat(item.price); %>
+              <div class="pt-3 first:pt-0 flex items-center justify-between gap-3 text-xs">
+                <div class="flex items-center space-x-3 truncate">
+                  <img src="<%= item.cover_image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80' %>" alt="<%= item.title %>" class="w-10 h-14 object-cover rounded shadow-2xs shrink-0">
+                  <div class="truncate">
+                    <p class="font-bold text-slate-900 truncate"><%= item.title %></p>
+                    <p class="text-slate-500 text-[11px]">Qty: <%= item.quantity %> × $<%= price.toFixed(2) %></p>
+                  </div>
+                </div>
+                <span class="font-bold text-slate-800 shrink-0">$<%= (price * item.quantity).toFixed(2) %></span>
+              </div>
+            <% }) %>
+          </div>
+
+          <!-- Totals Breakdown -->
+          <div class="space-y-2.5 pt-4 border-t border-slate-100 text-xs">
+            <div class="flex justify-between text-slate-600">
+              <span>Subtotal</span>
+              <span class="font-semibold text-slate-900">$<%= totals.subtotal %></span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>Shipping</span>
+              <% if (parseFloat(totals.shipping) === 0) { %>
+                <span class="font-bold text-emerald-600">FREE</span>
+              <% } else { %>
+                <span class="font-semibold text-slate-900">$<%= totals.shipping %></span>
+              <% } %>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>Tax (5%)</span>
+              <span class="font-semibold text-slate-900">$<%= totals.tax %></span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 flex justify-between items-baseline">
+              <span class="text-sm font-bold text-slate-900">Grand Total</span>
+              <span class="text-2xl font-extrabold text-brand-600">$<%= totals.total %></span>
+            </div>
+          </div>
+
+          <!-- Submit Order Button -->
+          <div>
+            <button type="submit" class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-shield-check text-sm"></i>
+              <span>Complete Purchase & Pay $<%= totals.total %></span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </form>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

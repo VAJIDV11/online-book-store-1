@@ -1,0 +1,299 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/alerts') %>
+
+<main class="flex-1">
+  <!-- 1. Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white py-16 lg:py-24">
+    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Hero Text -->
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-brand-500/20 border border-brand-400/30 text-brand-300 text-xs font-semibold backdrop-blur">
+            <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+            <span>Over 10,000+ Curated Titles Available</span>
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+            Immerse Yourself in <br class="hidden sm:inline">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 via-indigo-200 to-amber-300">Endless Knowledge</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            From technical programming manuals and astrophysics wonders to captivating literary novels and business masterpieces. Delivered fast to your doorstep.
+          </p>
+
+          <!-- Search form inside hero -->
+          <div class="pt-2 max-w-xl mx-auto lg:mx-0">
+            <form action="/catalogue" method="GET" class="flex flex-col sm:flex-row gap-2.5 p-1.5 bg-white/10 rounded-2xl border border-white/20 backdrop-blur-md">
+              <div class="relative flex-1">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"></i>
+                <input 
+                  type="text" 
+                  name="q" 
+                  placeholder="Find your favorite book or author..." 
+                  class="w-full pl-11 pr-4 py-3 bg-transparent text-white placeholder-slate-400 focus:outline-none text-sm"
+                >
+              </div>
+              <button type="submit" class="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm rounded-xl transition shadow-lg shadow-brand-600/40 flex items-center justify-center space-x-2 shrink-0">
+                <span>Search</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+              </button>
+            </form>
+          </div>
+
+          <!-- Quick statistics -->
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800 text-center lg:text-left">
+            <div>
+              <p class="text-2xl font-bold text-white">50k+</p>
+              <p class="text-xs text-slate-400">Happy Readers</p>
+            </div>
+            <div>
+              <p class="text-2xl font-bold text-white">100%</p>
+              <p class="text-xs text-slate-400">Original Editions</p>
+            </div>
+            <div>
+              <p class="text-2xl font-bold text-white">24/7</p>
+              <p class="text-xs text-slate-400">Customer Support</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual Showcase -->
+        <div class="lg:col-span-5 flex justify-center relative">
+          <div class="relative w-72 sm:w-80 h-96 rounded-2xl bg-gradient-to-tr from-brand-600/30 to-indigo-400/20 p-4 backdrop-blur-sm border border-white/10 shadow-2xl flex items-center justify-center">
+            <div class="relative z-10 w-56 h-80 rounded-xl overflow-hidden shadow-2xl transform -rotate-3 hover:rotate-0 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80" alt="Featured Book" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-4 text-white">
+                <span class="text-[10px] uppercase font-bold tracking-wider text-amber-400">Bestseller of the Week</span>
+                <h4 class="font-bold text-sm">Design Patterns</h4>
+                <p class="text-xs text-slate-300">Elements of Reusable Software</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Value Proposition Banners -->
+  <section class="border-y border-slate-100 bg-white py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center sm:text-left">
+        <div class="flex flex-col sm:flex-row items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-truck-fast text-lg"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Free Shipping</h4>
+            <p class="text-xs text-slate-500">On all orders over $50</p>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-shield-halved text-lg"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Secure Payments</h4>
+            <p class="text-xs text-slate-500">256-Bit SSL protection</p>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-rotate-left text-lg"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Easy Returns</h4>
+            <p class="text-xs text-slate-500">30-day money back guarantee</p>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-headset text-lg"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">24/7 Support</h4>
+            <p class="text-xs text-slate-500">Dedicated expert assistance</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Browse By Category -->
+  <section class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Curated Genres</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">Explore Popular Categories</h2>
+        </div>
+        <a href="/catalogue" class="mt-4 sm:mt-0 text-sm font-semibold text-brand-600 hover:text-brand-800 flex items-center gap-1.5 transition">
+          <span>View All Categories</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <% if (typeof categories !== 'undefined' && categories.length > 0) { %>
+          <% categories.forEach(category => { %>
+            <a href="/catalogue?category=<%= category.slug %>" class="group relative bg-white p-6 rounded-2xl border border-slate-200/80 hover:border-brand-300 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:bg-brand-600 group-hover:text-white transition duration-300">
+                  <i class="fa-solid <%= category.icon || 'fa-book' %>"></i>
+                </div>
+                <h3 class="font-bold text-base text-slate-900 mt-4 group-hover:text-brand-600 transition"><%= category.name %></h3>
+                <p class="text-xs text-slate-500 mt-1 line-clamp-2"><%= category.description %></p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                <span><%= category.book_count || 0 %> Books</span>
+                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-brand-600 group-hover:translate-x-1 transition"></i>
+              </div>
+            </a>
+          <% }) %>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Featured Books Grid -->
+  <section class="py-16 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between mb-10">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Hand-Picked Picks</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">Featured Titles</h2>
+        </div>
+        <a href="/catalogue" class="text-sm font-semibold text-brand-600 hover:text-brand-800 transition flex items-center gap-1.5">
+          <span>See Catalogue</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <% if (typeof featuredBooks !== 'undefined' && featuredBooks.length > 0) { %>
+          <% featuredBooks.forEach(book => { %>
+            <div class="book-card bg-white rounded-2xl border border-slate-200/80 overflow-hidden flex flex-col justify-between">
+              <div>
+                <!-- Book Image Container -->
+                <div class="relative bg-slate-50 p-6 flex items-center justify-center img-zoom-container h-64">
+                  <% if (book.discount_price) { %>
+                    <span class="badge-discount absolute top-3 left-3 text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-sm">
+                      Sale
+                    </span>
+                  <% } %>
+                  <% if (book.is_featured) { %>
+                    <span class="badge-featured absolute top-3 right-3 text-white text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md shadow-sm">
+                      <i class="fa-solid fa-bolt text-[9px]"></i> Featured
+                    </span>
+                  <% } %>
+                  <img src="<%= book.cover_image || 'https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg' %>" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80';" alt="<%= book.title %>" class="h-48 object-cover rounded shadow-md">
+                  
+                  <!-- Quick View Hover Button -->
+                  <button type="button" data-book-id="<%= book.id %>" class="quick-view-btn absolute bottom-3 bg-white/90 hover:bg-white text-slate-800 text-xs font-semibold px-3 py-1.5 rounded-full shadow-md backdrop-blur transition flex items-center gap-1.5">
+                    <i class="fa-regular fa-eye"></i> Quick View
+                  </button>
+                </div>
+
+                <!-- Book Info -->
+                <div class="p-5">
+                  <span class="text-[11px] font-semibold text-brand-600 uppercase tracking-wider"><%= book.category_name %></span>
+                  <h3 class="font-bold text-sm text-slate-900 mt-1 line-clamp-1 hover:text-brand-600 transition">
+                    <a href="/books/<%= book.id %>"><%= book.title %></a>
+                  </h3>
+                  <p class="text-xs text-slate-500 mt-0.5"><%= book.author %></p>
+
+                  <!-- Rating Stars -->
+                  <div class="flex items-center space-x-1 mt-2 text-amber-400 text-xs">
+                    <i class="fa-solid fa-star"></i>
+                    <span class="font-bold text-slate-700 ml-1"><%= book.rating || '4.5' %></span>
+                    <span class="text-slate-400">(<%= book.rating_count || 12 %>)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Price & Action -->
+              <div class="px-5 pb-5 pt-2 border-t border-slate-100 flex items-center justify-between">
+                <div>
+                  <% if (book.discount_price) { %>
+                    <span class="text-base font-extrabold text-slate-900">$<%= parseFloat(book.discount_price).toFixed(2) %></span>
+                    <span class="text-xs text-slate-400 line-through ml-1">$<%= parseFloat(book.price).toFixed(2) %></span>
+                  <% } else { %>
+                    <span class="text-base font-extrabold text-slate-900">$<%= parseFloat(book.price).toFixed(2) %></span>
+                  <% } %>
+                </div>
+
+                <form action="/cart/add" method="POST">
+                  <input type="hidden" name="book_id" value="<%= book.id %>">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" class="p-2.5 rounded-xl bg-brand-50 hover:bg-brand-600 text-brand-600 hover:text-white transition shadow-sm" title="Add to Cart">
+                    <i class="fa-solid fa-cart-plus text-sm"></i>
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          <% }) %>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Testimonial Section -->
+  <section class="py-16 bg-slate-50 border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Community Reviews</span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">Loved by 50,000+ Readers</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 text-left">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex text-amber-400 text-xs mb-3">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="text-slate-600 text-sm leading-relaxed">"The tech catalogue is incredible. I received Clean Code and Designing Data-Intensive Applications within 48 hours in immaculate condition."</p>
+          <div class="mt-4 flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-full bg-brand-100 text-brand-700 font-bold text-xs flex items-center justify-center">SK</div>
+            <div>
+              <p class="text-xs font-bold text-slate-900">Sarah Jenkins</p>
+              <p class="text-[11px] text-slate-400">Software Architect</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex text-amber-400 text-xs mb-3">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="text-slate-600 text-sm leading-relaxed">"BookHaven makes finding the latest fiction titles so enjoyable. The interface is lightning fast and checkout took under 30 seconds."</p>
+          <div class="mt-4 flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center justify-center">MR</div>
+            <div>
+              <p class="text-xs font-bold text-slate-900">Marcus Rodriguez</p>
+              <p class="text-[11px] text-slate-400">Literature Enthusiast</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex text-amber-400 text-xs mb-3">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="text-slate-600 text-sm leading-relaxed">"Outstanding customer support and genuine books. The discount pricing makes building my home library remarkably affordable."</p>
+          <div class="mt-4 flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center justify-center">EL</div>
+            <div>
+              <p class="text-xs font-bold text-slate-900">Emily Liu</p>
+              <p class="text-[11px] text-slate-400">PhD Researcher</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>

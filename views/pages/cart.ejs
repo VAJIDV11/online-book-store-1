@@ -1,0 +1,158 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/alerts') %>
+
+<main class="flex-1 py-8 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Page Header -->
+    <div class="mb-8">
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Your Shopping Cart</h1>
+      <p class="text-xs text-slate-500 mt-1">Review your selected books before heading to secure checkout.</p>
+    </div>
+
+    <% if (!cartItems || cartItems.length === 0) { %>
+      <!-- Empty Cart State -->
+      <div class="bg-white rounded-3xl border border-slate-200 p-12 text-center shadow-sm max-w-xl mx-auto my-8">
+        <div class="w-20 h-20 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto text-3xl mb-4">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+        <h2 class="text-xl font-bold text-slate-800">Your Cart is Currently Empty</h2>
+        <p class="text-xs text-slate-500 mt-2 max-w-sm mx-auto">Explore thousands of bestselling books, technical guides, and timeless fiction in our catalogue.</p>
+        <a href="/catalogue" class="mt-6 inline-flex items-center space-x-2 px-6 py-3 bg-brand-600 text-white rounded-xl text-xs font-bold hover:bg-brand-700 shadow-md shadow-brand-600/30 transition">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Start Exploring Books</span>
+        </a>
+      </div>
+    <% } else { %>
+      <!-- Cart Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Cart Items List (Col 8) -->
+        <div class="lg:col-span-8 space-y-4">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden divide-y divide-slate-100">
+            <% cartItems.forEach(item => { %>
+              <% const effectivePrice = item.discount_price !== null && item.discount_price !== undefined ? parseFloat(item.discount_price) : parseFloat(item.price); %>
+              <div class="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                
+                <!-- Book Info -->
+                <div class="flex items-center space-x-4">
+                  <img src="<%= item.cover_image || 'https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg' %>" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80';" alt="<%= item.title %>" class="w-16 h-20 object-cover rounded-lg shadow-sm shrink-0">
+                  <div>
+                    <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider"><%= item.category_name || 'Book' %></span>
+                    <h3 class="font-bold text-sm text-slate-900 line-clamp-1 hover:text-brand-600 transition">
+                      <a href="/books/<%= item.book_id %>"><%= item.title %></a>
+                    </h3>
+                    <p class="text-xs text-slate-500"><%= item.author %></p>
+                    <div class="mt-1 flex items-baseline space-x-2">
+                      <span class="text-sm font-bold text-slate-900">$<%= effectivePrice.toFixed(2) %></span>
+                      <% if (item.discount_price) { %>
+                        <span class="text-xs text-slate-400 line-through">$<%= parseFloat(item.price).toFixed(2) %></span>
+                      <% } %>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Quantity & Actions -->
+                <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 pt-2 sm:pt-0 border-t sm:border-0 border-slate-100">
+                  <!-- Update Quantity Form -->
+                  <form action="/cart/update" method="POST" class="flex items-center border border-slate-200 rounded-lg bg-slate-50">
+                    <input type="hidden" name="book_id" value="<%= item.book_id %>">
+                    <input 
+                      type="number" 
+                      name="quantity" 
+                      value="<%= item.quantity %>" 
+                      min="1" 
+                      max="<%= item.stock_quantity || 99 %>"
+                      onchange="this.form.submit()" 
+                      class="w-16 text-center py-1.5 bg-transparent text-xs font-bold text-slate-800 focus:outline-none"
+                    >
+                  </form>
+
+                  <!-- Line Item Subtotal -->
+                  <div class="text-right sm:w-24">
+                    <span class="text-sm font-extrabold text-slate-900">$<%= (effectivePrice * item.quantity).toFixed(2) %></span>
+                  </div>
+
+                  <!-- Remove Button -->
+                  <form action="/cart/remove" method="POST">
+                    <input type="hidden" name="book_id" value="<%= item.book_id %>">
+                    <button type="submit" class="p-2 text-slate-400 hover:text-rose-600 transition" title="Remove Item">
+                      <i class="fa-regular fa-trash-can text-sm"></i>
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+            <% }) %>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="flex items-center justify-between text-xs pt-2">
+            <a href="/catalogue" class="text-brand-600 hover:text-brand-800 font-semibold transition flex items-center gap-1">
+              <i class="fa-solid fa-arrow-left text-[10px]"></i>
+              <span>Continue Shopping</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Order Summary (Col 4) -->
+        <div class="lg:col-span-4">
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm sticky top-24 space-y-6">
+            <h2 class="text-base font-bold text-slate-900 pb-4 border-b border-slate-100">Order Summary</h2>
+
+            <div class="space-y-3 text-xs">
+              <div class="flex justify-between text-slate-600">
+                <span>Subtotal</span>
+                <span class="font-semibold text-slate-900">$<%= totals.subtotal %></span>
+              </div>
+              <div class="flex justify-between text-slate-600">
+                <span>Estimated Shipping</span>
+                <% if (parseFloat(totals.shipping) === 0) { %>
+                  <span class="font-bold text-emerald-600">FREE</span>
+                <% } else { %>
+                  <span class="font-semibold text-slate-900">$<%= totals.shipping %></span>
+                <% } %>
+              </div>
+              <div class="flex justify-between text-slate-600">
+                <span>Estimated Sales Tax (5%)</span>
+                <span class="font-semibold text-slate-900">$<%= totals.tax %></span>
+              </div>
+              
+              <% if (parseFloat(totals.subtotal) < 50 && parseFloat(totals.subtotal) > 0) { %>
+                <div class="p-2.5 rounded-lg bg-brand-50 border border-brand-100 text-[11px] text-brand-800 flex items-center gap-2">
+                  <i class="fa-solid fa-truck text-brand-600"></i>
+                  <span>Add <strong>$<%= (50 - parseFloat(totals.subtotal)).toFixed(2) %></strong> more for <strong>FREE Shipping</strong>!</span>
+                </div>
+              <% } %>
+
+              <div class="pt-4 border-t border-slate-100 flex justify-between items-baseline">
+                <span class="text-sm font-bold text-slate-900">Total</span>
+                <span class="text-2xl font-extrabold text-brand-600">$<%= totals.total %></span>
+              </div>
+            </div>
+
+            <!-- Checkout Action -->
+            <div class="pt-2">
+              <a href="/checkout" class="w-full py-3.5 px-4 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-brand-600/30 transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-lock text-xs"></i>
+                <span>Proceed to Checkout</span>
+              </a>
+            </div>
+
+            <!-- Security Assurance -->
+            <div class="pt-2 flex items-center justify-center space-x-4 text-[11px] text-slate-400">
+              <span class="flex items-center gap-1"><i class="fa-solid fa-shield-check text-emerald-500"></i> Guaranteed Safe</span>
+              <span class="flex items-center gap-1"><i class="fa-solid fa-rotate-left text-brand-500"></i> 30-Day Returns</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    <% } %>
+
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

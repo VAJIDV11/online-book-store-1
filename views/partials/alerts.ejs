@@ -1,0 +1,27 @@
+<% if (typeof success !== 'undefined' && success.length > 0) { %>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+    <div class="flash-alert alert-animate bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg shadow-sm flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+        <p class="text-sm font-medium text-emerald-800"><%= success %></p>
+      </div>
+      <button onclick="this.closest('.flash-alert').remove()" class="text-emerald-500 hover:text-emerald-700 transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+<% } %>
+
+<% if (typeof error !== 'undefined' && error.length > 0) { %>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+    <div class="flash-alert alert-animate bg-rose-50 border-l-4 border-rose-500 p-4 rounded-r-lg shadow-sm flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <i class="fa-solid fa-circle-exclamation text-rose-500 text-lg"></i>
+        <p class="text-sm font-medium text-rose-800"><%= error %></p>
+      </div>
+      <button onclick="this.closest('.flash-alert').remove()" class="text-rose-500 hover:text-rose-700 transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+<% } %>

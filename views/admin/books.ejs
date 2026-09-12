@@ -1,0 +1,115 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/alerts') %>
+
+<main class="flex-1 py-8 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+      <div>
+        <nav class="flex items-center text-xs text-slate-500 space-x-2 mb-2">
+          <a href="/admin" class="hover:text-brand-600 transition">Admin Dashboard</a>
+          <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          <span class="text-slate-800 font-semibold">Inventory</span>
+        </nav>
+        <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Manage Book Inventory</h1>
+      </div>
+      <a href="/admin/books/add" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
+        <i class="fa-solid fa-plus"></i> Add New Book
+      </a>
+    </div>
+
+    <!-- Inventory Table Card -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-6 sm:p-8 space-y-4">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+        <p class="text-xs text-slate-500">Total registered titles: <strong class="text-slate-800"><%= books.length %></strong></p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="border-b border-slate-100 text-slate-400 font-bold uppercase text-[10px]">
+              <th class="pb-3">Book</th>
+              <th class="pb-3">Category</th>
+              <th class="pb-3">Price</th>
+              <th class="pb-3">Stock</th>
+              <th class="pb-3">Status</th>
+              <th class="pb-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <% books.forEach(book => { %>
+              <tr class="hover:bg-slate-50/80 transition">
+                
+                <!-- Book Info -->
+                <td class="py-3.5 pr-4 flex items-center space-x-3">
+                  <img src="<%= book.cover_image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80' %>" alt="" class="w-10 h-14 object-cover rounded shadow-2xs shrink-0">
+                  <div class="truncate max-w-xs">
+                    <p class="font-bold text-slate-900 truncate"><%= book.title %></p>
+                    <p class="text-slate-500 text-[11px]"><%= book.author %></p>
+                  </div>
+                </td>
+
+                <!-- Category -->
+                <td class="py-3.5 text-slate-600">
+                  <span class="px-2.5 py-1 bg-slate-100 rounded-md font-medium text-[11px]"><%= book.category_name %></span>
+                </td>
+
+                <!-- Price -->
+                <td class="py-3.5 font-bold text-slate-900">
+                  <% if (book.discount_price) { %>
+                    <div>
+                      <span>$<%= parseFloat(book.discount_price).toFixed(2) %></span>
+                      <span class="text-[10px] text-slate-400 line-through block font-normal">$<%= parseFloat(book.price).toFixed(2) %></span>
+                    </div>
+                  <% } else { %>
+                    $<%= parseFloat(book.price).toFixed(2) %>
+                  <% } %>
+                </td>
+
+                <!-- Stock Quantity -->
+                <td class="py-3.5">
+                  <% if (book.stock_quantity <= 5) { %>
+                    <span class="text-rose-600 font-bold"><%= book.stock_quantity %> units</span>
+                  <% else if (book.stock_quantity <= 15) { %>
+                    <span class="text-amber-600 font-bold"><%= book.stock_quantity %> units</span>
+                  <% } else { %>
+                    <span class="text-slate-700 font-medium"><%= book.stock_quantity %> units</span>
+                  <% } %>
+                </td>
+
+                <!-- Featured Badge -->
+                <td class="py-3.5">
+                  <% if (book.is_featured) { %>
+                    <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-[10px] font-bold rounded-full">Featured</span>
+                  <% } else { %>
+                    <span class="text-slate-400 text-[10px]">Standard</span>
+                  <% } %>
+                </td>
+
+                <!-- Actions (Edit / Delete) -->
+                <td class="py-3.5 text-right space-x-2">
+                  <a href="/admin/books/edit/<%= book.id %>" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition inline-block">
+                    <i class="fa-regular fa-pen-to-square"></i> Edit
+                  </a>
+                  <form action="/admin/books/delete/<%= book.id %>" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to permanently delete \'<%= book.title %>\'?');">
+                    <button type="submit" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-lg transition">
+                      <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                  </form>
+                </td>
+
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

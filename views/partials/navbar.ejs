@@ -1,0 +1,144 @@
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-100 shadow-sm transition-all">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="flex items-center space-x-3 shrink-0 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition">
+          <i class="fa-solid fa-book-open text-lg"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-xl tracking-tight text-slate-900 group-hover:text-brand-600 transition">BookHaven</span>
+          <span class="text-[10px] uppercase tracking-wider font-semibold text-brand-600 -mt-1">Online Store</span>
+        </div>
+      </a>
+
+      <!-- Desktop Search Bar -->
+      <div class="hidden md:flex flex-1 max-w-md mx-4">
+        <form action="/catalogue" method="GET" class="relative w-full">
+          <input 
+            type="text" 
+            name="q" 
+            placeholder="Search by title, author, or ISBN..." 
+            class="w-full pl-10 pr-4 py-2 bg-slate-100/80 border border-slate-200 rounded-full text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition duration-200"
+          >
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+          </div>
+        </form>
+      </div>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden lg:flex items-center space-x-1 font-medium text-sm text-slate-600">
+        <a href="/" class="px-3 py-2 rounded-lg hover:text-brand-600 hover:bg-slate-50 transition <%= (typeof currentPath !== 'undefined' && currentPath === '/') ? 'text-brand-600 font-semibold bg-brand-50/50' : '' %>">Home</a>
+        <a href="/catalogue" class="px-3 py-2 rounded-lg hover:text-brand-600 hover:bg-slate-50 transition <%= (typeof currentPath !== 'undefined' && currentPath.startsWith('/catalogue')) ? 'text-brand-600 font-semibold bg-brand-50/50' : '' %>">Catalogue</a>
+        <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+          <a href="/admin" class="px-3 py-2 rounded-lg text-amber-700 bg-amber-50 hover:bg-amber-100 font-semibold transition flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-halved text-xs"></i> Admin Panel
+          </a>
+        <% } %>
+      </nav>
+
+      <!-- Right Action Items (Cart & Auth) -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        
+        <!-- Cart Icon with dynamic badge -->
+        <a href="/cart" class="relative p-2.5 text-slate-700 hover:text-brand-600 hover:bg-slate-100 rounded-full transition group" title="View Cart">
+          <i class="fa-solid fa-bag-shopping text-xl"></i>
+          <span class="absolute top-1 right-1 w-5 h-5 rounded-full bg-brand-600 text-white text-[11px] font-bold flex items-center justify-center ring-2 ring-white">
+            <%= (typeof cartCount !== 'undefined') ? cartCount : 0 %>
+          </span>
+        </a>
+
+        <!-- User Authentication State -->
+        <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+          <!-- User Dropdown Menu -->
+          <div class="relative">
+            <button id="user-menu-btn" type="button" class="flex items-center space-x-2 p-1.5 pl-2 rounded-full border border-slate-200 hover:border-brand-300 hover:shadow-sm transition bg-white">
+              <div class="w-7 h-7 rounded-full bg-brand-100 text-brand-700 font-bold text-xs flex items-center justify-center">
+                <%= currentUser.full_name.charAt(0).toUpperCase() %>
+              </div>
+              <span class="hidden sm:inline text-xs font-semibold text-slate-700 max-w-[100px] truncate"><%= currentUser.full_name.split(' ')[0] %></span>
+              <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 pr-1"></i>
+            </button>
+
+            <!-- Dropdown Body -->
+            <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 text-sm animate-fade-in">
+              <div class="px-4 py-2.5 border-b border-slate-100 bg-slate-50/50">
+                <p class="text-xs font-semibold text-slate-500">Signed in as</p>
+                <p class="text-sm font-bold text-slate-900 truncate"><%= currentUser.email %></p>
+                <% if (currentUser.role === 'admin') { %>
+                  <span class="inline-block mt-1 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide bg-amber-100 text-amber-800 rounded">Admin</span>
+                <% } %>
+              </div>
+              <a href="/profile" class="flex items-center space-x-2.5 px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-brand-600 transition">
+                <i class="fa-regular fa-user text-slate-400 w-4"></i>
+                <span>My Profile & Orders</span>
+              </a>
+              <% if (currentUser.role === 'admin') { %>
+                <a href="/admin" class="flex items-center space-x-2.5 px-4 py-2.5 text-amber-700 hover:bg-amber-50 font-medium transition">
+                  <i class="fa-solid fa-gauge text-amber-500 w-4"></i>
+                  <span>Admin Dashboard</span>
+                </a>
+              <% } %>
+              <div class="border-t border-slate-100 my-1"></div>
+              <form action="/logout" method="POST" class="w-full">
+                <button type="submit" class="w-full flex items-center space-x-2.5 px-4 py-2.5 text-rose-600 hover:bg-rose-50 transition text-left">
+                  <i class="fa-solid fa-arrow-right-from-bracket text-rose-500 w-4"></i>
+                  <span>Sign Out</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        <% } else { %>
+          <!-- Guest Links -->
+          <div class="flex items-center space-x-2">
+            <a href="/login" class="px-3.5 py-1.5 text-sm font-semibold text-slate-700 hover:text-brand-600 transition rounded-lg">Sign In</a>
+            <a href="/register" class="px-3.5 py-1.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-500/20 transition">Register</a>
+          </div>
+        <% } %>
+
+        <!-- Mobile Menu Hamburger Button -->
+        <button id="mobile-menu-btn" type="button" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg focus:outline-none">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Search (Visible on small screens) -->
+    <div class="md:hidden pb-3">
+      <form action="/catalogue" method="GET" class="relative w-full">
+        <input 
+          type="text" 
+          name="q" 
+          placeholder="Search books..." 
+          class="w-full pl-9 pr-4 py-2 bg-slate-100 border border-slate-200 rounded-full text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:border-brand-500"
+        >
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <i class="fa-solid fa-magnifying-glass text-xs"></i>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-100 bg-white px-4 pt-2 pb-4 space-y-1">
+    <a href="/" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-brand-600">Home</a>
+    <a href="/catalogue" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-brand-600">All Books</a>
+    <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+      <a href="/admin" class="block px-3 py-2 rounded-md text-base font-semibold text-amber-700 bg-amber-50">Admin Panel</a>
+    <% } %>
+    <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+      <a href="/profile" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50">My Profile & Orders</a>
+      <form action="/logout" method="POST" class="pt-2">
+        <button type="submit" class="w-full text-left px-3 py-2 text-base font-medium text-rose-600 hover:bg-rose-50 rounded-md">Sign Out</button>
+      </form>
+    <% } else { %>
+      <div class="pt-4 border-t border-slate-100 flex flex-col space-y-2">
+        <a href="/login" class="w-full text-center py-2 text-sm font-semibold text-slate-700 bg-slate-100 rounded-lg">Sign In</a>
+        <a href="/register" class="w-full text-center py-2 text-sm font-semibold text-white bg-brand-600 rounded-lg">Create Account</a>
+      </div>
+    <% } %>
+  </div>
+</header>
